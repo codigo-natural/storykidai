@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
+import { Creepster, Fredoka } from "next/font/google";
 import "./globals.css";
+import Provider from "./provider";
+import { Header } from "./_components/Header";
 
-const geistSans = localFont({
+/*const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
   weight: "100 900",
@@ -12,6 +14,10 @@ const geistMono = localFont({
   variable: "--font-geist-mono",
   weight: "100 900",
 });
+*/
+const MyAppFont = Creepster({ subsets: ['latin'], weight: '400' })
+export const secondFont = Fredoka({ subsets: ['hebrew'], weight: '600' })
+
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -26,9 +32,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${MyAppFont.className} bg-halloweenbg`}
       >
-        {children}
+        <Provider>
+          {/* Header */}
+          <Header />
+          {children}
+        </Provider>
       </body>
     </html>
   );
