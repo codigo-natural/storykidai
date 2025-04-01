@@ -7,7 +7,6 @@ import HTMLFlipBook from 'react-pageflip'
 import { BookCoverPage } from '../_components/BookCoverPage'
 import { StoryPages } from '../_components/StoryPages'
 import { LastPage } from '../_components/LastPage'
-import { Button } from '@nextui-org/button'
 import { SvgIcons } from '@/public/svg'
 
 export default function ViewStoryPage({ params }: any) {

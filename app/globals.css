@@ -3,9 +3,8 @@
 @tailwind utilities;
 
 :root {
-  --gradient: linear-gradient(135deg, #FF6F00, #7E57C2, #FF80AB)
+  --gradient: linear-gradient(135deg, #ff6f00, #7e57c2, #ff80ab);
 }
-
 
 .font-fredoka {
   font-family: 'Fredoka', sans-serif; /* Asegúrate de que el nombre sea correcto */
