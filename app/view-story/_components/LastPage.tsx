@@ -1,4 +1,4 @@
-import { Button } from '@nextui-org/button'
+import { Button } from '@/app/_components/Button'
 import React from 'react'
 
 export const LastPage = () => {

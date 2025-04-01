@@ -8,7 +8,7 @@ import {
   StoryItemCard,
   StoryItemType,
 } from '../dashboard/_components/StoryItemCard'
-import { Button } from '@nextui-org/button'
+import { Button } from '../_components/Button'
 
 export default function ExplorMore() {
   const [offset, setOffset] = useState(0)
@@ -30,7 +30,7 @@ export default function ExplorMore() {
   }
 
   return (
-    <div className='min-h-screen p-10 md:px-20 lg:px40'>
+    <div className='px-40 pt-20 md:px-20 lg:px40'>
       <h2 className='font-bold text-4xl text-halloweenPurple text-center mb-4'>
         Explorar mas historias
       </h2>
@@ -42,9 +42,7 @@ export default function ExplorMore() {
           )}
       </div>
       <div className='text-center mt-10'>
-        <Button className='' onClick={() => GetAllStories(offset + 5)}>
-          Cargar mas
-        </Button>
+        <Button onClick={() => GetAllStories(offset + 5)}>Load More</Button>
       </div>
     </div>
   )

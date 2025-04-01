@@ -6,9 +6,9 @@ const config: Config = {
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
-    "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
+    darkMode: 'class',
     extend: {
       boxShadow: {
         'custom': '10px 14px 39px 0px rgba(255, 111, 0, 1)',
@@ -28,24 +28,5 @@ const config: Config = {
     },
   },
   darkMode: "class",
-  plugins: [
-    nextui({
-      themes: {
-        light: {
-          // ...
-          colors: {
-            primary: {
-            },
-          },
-        },
-        dark: {
-          // ...
-          colors: {},
-        },
-        // ... custom themes
-      },
-    }),
-
-  ],
 };
 export default config;

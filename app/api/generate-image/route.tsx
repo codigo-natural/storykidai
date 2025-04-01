@@ -1,67 +1,64 @@
-// /app/api/generate-image/route.ts
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server'
+import Replicate from 'replicate'
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   try {
-    const data = await req.json()
-    const { prompt, apiKey } = data; // Añadido para recibir la clave API
+    const { prompt, apiKey } = await req.json()
 
-    console.log('data in backend:', data)
-
-    // Definir los headers
-    const headers = new Headers();
-    headers.append("Content-Type", "application/json");
-
-    // Crear el cuerpo de la solicitud con los parámetros de imagen y la clave API
-    const raw = JSON.stringify({
-      "key": apiKey, // Utilizar la clave API recibida
-      "model_id": "midjourney",
-      "prompt": prompt,
-      "negative_prompt": "",
-      "width": "512",
-      "height": "512",
-      "samples": "1",
-      "num_inference_steps": "30",
-      "safety_checker": "no",
-      "enhance_prompt": "yes",
-      "seed": null,
-      "guidance_scale": 7.5,
-      "panorama": "no",
-      "self_attention": "no",
-      "upscale": "no",
-      "embeddings_model": null,
-      "lora_model": null,
-      "tomesd": "yes",
-      "use_karras_sigmas": "yes",
-      "vae": null,
-      "lora_strength": null,
-      "scheduler": "UniPCMultistepScheduler",
-      "webhook": null,
-      "track_id": null
-    });
-
-    // Opciones para la solicitud fetch
-    const requestOptions = {
-      method: 'POST',
-      headers: headers,
-      body: raw,
-    };
-
-    // Llamada al endpoint externo para generar la imagen
-    const response = await fetch("https://modelslab.com/api/v6/images/text2img", requestOptions);
-
-    // Manejo de la respuesta
-    if (!response.ok) {
-      return NextResponse.json({ message: "Error en la generación de la imagen" }, { status: response.status });
+    // Verificar si prompt y apiKey están presentes
+    if (!prompt || !apiKey) {
+      console.error('Error: Missing prompt or API key')
+      return NextResponse.json(
+        { error: 'Prompt and API key are required' },
+        { status: 400 }
+      )
     }
 
-    const result = await response.json();
-    console.log('result back img: ', result)
-    return NextResponse.json(result);
+    console.log('Received prompt:', prompt, 'API Key:', apiKey)
 
+    const replicate = new Replicate({
+      auth: process.env.REPLICATE_API_TOKEN,
+    })
+
+    const input = {
+      prompt: prompt,
+      output_format: 'png',
+      output_quality: 80,
+      aspect_ratio: '1:1',
+    }
+
+    let output
+
+    try {
+      // Intentar correr el modelo de Replicate
+      output = await replicate.run('black-forest-labs/flux-schnell', { input })
+    } catch (apiError) {
+      console.error('Error al llamar a la API de Replicate:', apiError)
+      return NextResponse.json(
+        { error: 'Failed to generate image from API' },
+        { status: 500 }
+      )
+    }
+
+    // Verificar si la respuesta es un array y contiene al menos un elemento
+    if (!Array.isArray(output) || output.length === 0) {
+      console.error('Error: API response is not valid', output)
+      return NextResponse.json(
+        { error: 'Invalid API response' },
+        { status: 500 }
+      )
+    }
+
+    console.log('Generated image URL:', output[0])
+
+    // Devolver la URL de la imagen generada
+    return NextResponse.json({ imageUrl: output[0] })
   } catch (error) {
-    // Manejo de errores
-    console.error("Error en la API de generación de imagen:", error);
-    return NextResponse.json({ message: "Error interno del servidor" }, { status: 500 });
+    // Manejo de cualquier otro error inesperado
+    console.error('Unexpected error:', error)
+    return NextResponse.json(
+      { error: 'Internal Server Error' },
+      { status: 500 }
+    )
   }
 }

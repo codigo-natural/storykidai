@@ -1,4 +1,3 @@
-// app/api/save-image/route.ts
 import { storage } from "@/config/firebaseConfig";
 import axios from "axios";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";

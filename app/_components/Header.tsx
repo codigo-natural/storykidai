@@ -1,86 +1,76 @@
 'use client'
 
 import React, { useState } from 'react'
-import {
-  Navbar,
-  NavbarBrand,
-  NavbarContent,
-  NavbarItem,
-  NavbarMenuToggle,
-  NavbarMenu,
-  NavbarMenuItem,
-  Button
-} from "@nextui-org/react";
-import Image from 'next/image';
-import Link from 'next/link';
-import { UserButton, useUser } from '@clerk/nextjs';
+import Link from 'next/link'
+import { UserButton, useUser } from '@clerk/nextjs'
+import { useRouter } from 'next/navigation'
+import { Button } from './Button'
 
 export const Header = () => {
   const { user, isSignedIn } = useUser()
-  const MenuList = [
+  const router = useRouter()
+  const menuList = [
     {
       name: 'Home',
-      path: '/'
+      path: '/',
     },
     {
       name: 'Create Story',
-      path: '/create-story'
+      path: '/create-story',
     },
     {
       name: 'Explore Stories',
-      path: '/explore'
+      path: '/explore',
     },
-    {
-      name: 'Contact Us',
-      path: '/contact-us'
-    }
   ]
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   return (
-    <Navbar maxWidth='full' onMenuOpenChange={setIsMenuOpen} className='bg-halloweenbg text-hallowennorange'>
-      <NavbarContent>
-        <NavbarMenuToggle
-          aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
-          className='sm:hidden'
-        />
-        <NavbarBrand>
-          <Link href={'/'}>
-            <h2
-              className='font-bold text-2xl ml-3'
-              style={{ textShadow: '10px 14px 39px rgba(255, 111, 0, 1)' }}
+    <nav className='bg-white shadow-md w-full fixed top-0 left-0 z-50'>
+      <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
+        <div className='flex justify-between h-16 items-center'>
+          <div className='flex items-center'>
+            <button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className='sm:hidden p-2 rounded-md text-gray-700 hover:bg-gray-200 focus:outline-none'
             >
+              {isMenuOpen ? '✖' : '☰'}
+            </button>
+            <Link href='/' className='text-2xl font-bold ml-3'>
               StoryKid AI
-            </h2>
-          </Link>
-        </NavbarBrand>
-      </NavbarContent>
-      <NavbarContent justify='center' className='hidden sm:flex'>
-        {MenuList.map(((item, index) => (
-          <NavbarItem key={index} className='text-xl text-hallowennorange font-medium hover:underline mx-2'>
-            <Link href={item.path}>
+            </Link>
+          </div>
+          <div className='hidden sm:flex space-x-6'>
+            {menuList.map((item) => (
+              <Link
+                key={item.name}
+                href={item.path}
+                className='text-lg font-medium hover:underline'
+              >
+                {item.name}
+              </Link>
+            ))}
+          </div>
+          <div className='flex items-center space-x-4'>
+            <Button onClick={() => router.push('/dashboard')}>
+              {isSignedIn ? 'Dashboard' : 'Get Started'}
+            </Button>
+            <UserButton />
+          </div>
+        </div>
+      </div>
+      {isMenuOpen && (
+        <div className='sm:hidden bg-white shadow-md py-2'>
+          {menuList.map((item) => (
+            <Link
+              key={item.name}
+              href={item.path}
+              className='block px-4 py-2 text-lg font-medium hover:bg-gray-100'
+            >
               {item.name}
             </Link>
-          </NavbarItem>
-        )))}
-      </NavbarContent>
-      <NavbarContent justify='end'>
-        <Link href={'/dashboard'}>
-          <Button className='bg-hallowennorange'>
-            {isSignedIn ? 'Dashboard' : 'Get Started'}
-          </Button>
-        </Link>
-        <UserButton />
-      </NavbarContent>
-      <NavbarMenu>
-        {MenuList.map((item, index) => (
-          <NavbarMenuItem key={index}>
-            <Link href={item.path}>
-              {item.name}
-            </Link>
-          </NavbarMenuItem>
-        ))}
-      </NavbarMenu>
-    </Navbar>
+          ))}
+        </div>
+      )}
+    </nav>
   )
 }
-

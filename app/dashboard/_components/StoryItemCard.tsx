@@ -1,8 +1,9 @@
-import { Button } from '@nextui-org/button'
-import { Card, CardFooter, CardHeader } from '@nextui-org/card'
-import { Image } from '@nextui-org/react'
+import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
+import { Card } from './Card'
+import { CardFooter } from './CardFooter'
+import { Button } from '@/app/_components/Button'
 
 export type StoryItemType = {
   id: number
@@ -19,34 +20,23 @@ export type StoryItemType = {
 }
 
 export const StoryItemCard = ({ story }: { story: StoryItemType }) => {
-  console.log('story: ', story)
   return (
     <Link href={'/view-story/' + story?.storyId}>
-      <Card
-        isFooterBlurred
-        className='w-full h-[300px] col-span-12 sm:col-span-5 hover:scale-105 transition-all cursor-pointer'
-      >
+      <Card>
         <Image
-          removeWrapper
-          alt='Card example background'
-          className='z-0 w-full h-full scale-125 -translate-y-6 object-cover'
-          src='/bat.png'
+          alt='Story cover image'
+          className='w-full h-full object-cover'
+          src={story.coverImage || '/bat.png'}
           width={500}
           height={500}
         />
-        <CardFooter className='absolute bg-white/30 bottom-0 border-t-1 border-zinc-100/50 z-10 justify-between'>
-          <div>
-            <p className='text-azulnocturno text-xl'>
-              {story?.output?.story_name}
-            </p>
+        <CardFooter>
+          <p className='text-azulnocturno text-xl font-semibold'>
+            {story?.output?.story_name}
+          </p>
+          <div className='flex items-center gap-4'>
+            <Button>Read</Button>
           </div>
-          <Button
-            className='text-tiny bg-hallowennorange'
-            radius='full'
-            size='sm'
-          >
-            Read Now
-          </Button>
         </CardFooter>
       </Card>
     </Link>

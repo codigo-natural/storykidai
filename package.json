@@ -14,14 +14,9 @@
     "@clerk/nextjs": "^5.7.1",
     "@google/generative-ai": "^0.21.0",
     "@neondatabase/serverless": "^0.10.1",
-    "@nextui-org/button": "^2.0.38",
-    "@nextui-org/card": "^2.0.34",
     "@nextui-org/input": "^2.2.5",
     "@nextui-org/modal": "^2.0.41",
-    "@nextui-org/navbar": "^2.0.37",
     "@nextui-org/react": "^2.4.8",
-    "@nextui-org/system": "^2.2.6",
-    "@nextui-org/theme": "^2.2.11",
     "axios": "1.7.7",
     "dotenv": "16.4.5",
     "drizzle-orm": "^0.34.1",
@@ -32,6 +27,7 @@
     "react-dom": "^18",
     "react-pageflip": "2.0.3",
     "react-toastify": "10.0.6",
+    "replicate": "^1.0.1",
     "uuid4": "^2.0.3"
   },
   "devDependencies": {
